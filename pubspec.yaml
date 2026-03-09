@@ -1,7 +1,7 @@
 name: telegram_downloader
 description: Telegram Downloader - Cross-platform app for managing Telegram downloads
 publish_to: 'none'
-version: 1.0.4+5
+version: 1.0.5+6
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
