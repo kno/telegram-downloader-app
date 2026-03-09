@@ -42,7 +42,8 @@ jobs:
           git add pubspec.yaml
           git commit -m "chore: bump version to ${{ steps.bump.outputs.version }} [skip ci]"
           git tag -f "v${{ steps.bump.outputs.version }}"
-          git push origin HEAD:main --follow-tags --force
+          git push origin HEAD:main
+          git push origin "v${{ steps.bump.outputs.version }}" --force
 
   # ──────────────────────────────────────────────
   # Job 2: Build Android APK
