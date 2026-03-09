@@ -1,0 +1,35 @@
+# Flutter/Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+
+# Android
+android/.gradle
+android/captures/
+android/gradlew
+android/gradlew.bat
+android/local.properties
+android/**/GeneratedPluginRegistrant.java
+android/key.properties
+*.jks
+
+# iOS/macOS
+**/Flutter/ephemeral/
+**/Pods/
+**/xcuserdata/
+
+# Windows
+windows/flutter/ephemeral/
+
+# IDE
+.idea/
+*.swp
+.vscode/
+
+# Generated
+*.g.dart
+*.freezed.dart
+.dart_tool/
