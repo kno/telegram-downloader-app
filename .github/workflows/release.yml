@@ -74,6 +74,8 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: flutter build apk --release
 
       - name: Upload APK
