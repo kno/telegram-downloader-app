@@ -187,10 +187,44 @@ jobs:
       - name: Build macOS
         run: flutter build macos --release
 
-      - name: Zip release bundle
+      - name: Embed libtdjson.dylib and fix rpaths
+        run: |
+          APP="build/macos/Build/Products/Release/telegram_downloader.app"
+          FRAMEWORKS="$APP/Contents/Frameworks"
+
+          # Find the libtdjson.dylib from XCFramework intermediates
+          DYLIB=$(find build/macos/Build/Products/Release -path "*/flutter_libtdjson/libtdjson.dylib" -type f | head -1)
+          if [ -z "$DYLIB" ]; then
+            DYLIB=$(find build/macos -name "libtdjson.dylib" -type f | head -1)
+          fi
+
+          if [ -n "$DYLIB" ]; then
+            echo "Found libtdjson.dylib at: $DYLIB"
+            cp "$DYLIB" "$FRAMEWORKS/libtdjson.dylib"
+            # Re-sign the copied dylib for ad-hoc distribution
+            codesign --force --sign - "$FRAMEWORKS/libtdjson.dylib"
+          else
+            echo "WARNING: libtdjson.dylib not found in build intermediates"
+            find build/macos -name "libtdjson*" -type f
+            exit 1
+          fi
+
+          # Fix the rpath in the libtdjson.framework wrapper to look in Frameworks/
+          WRAPPER="$FRAMEWORKS/libtdjson.framework/Versions/A/libtdjson"
+          # Remove the CI build-dir rpath and add the correct one
+          CI_RPATH=$(otool -l "$WRAPPER" | grep -A2 "LC_RPATH" | grep "runner" | awk '{print $2}')
+          if [ -n "$CI_RPATH" ]; then
+            install_name_tool -delete_rpath "$CI_RPATH" "$WRAPPER" 2>/dev/null || true
+          fi
+          install_name_tool -add_rpath "@executable_path/../Frameworks" "$WRAPPER" 2>/dev/null || true
+          install_name_tool -add_rpath "@loader_path/.." "$WRAPPER" 2>/dev/null || true
+          # Re-sign the modified framework
+          codesign --force --sign - "$WRAPPER"
+
+      - name: Zip release bundle (preserving symlinks)
         run: |
           cd build/macos/Build/Products/Release
-          zip -r "$GITHUB_WORKSPACE/telegram-downloader-macos.zip" "telegram_downloader.app"
+          ditto -c -k --sequesterRsrc --keepParent "telegram_downloader.app" "$GITHUB_WORKSPACE/telegram-downloader-macos.zip"
 
       - name: Upload macOS build
         uses: actions/upload-artifact@v4
