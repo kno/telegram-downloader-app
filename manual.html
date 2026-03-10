@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual de Usuario - Telegram Downloader</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+      --telegram-blue: #0088CC;
+      --primary: #3B82F6;
+      --dark: #1a1a2e;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --green: #10b981;
+      --red: #ef4444;
+      --orange: #f59e0b;
+      --purple: #8b5cf6;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--gray-800);
+      line-height: 1.7;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    /* Cover page */
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0088CC 0%, #1a1a2e 100%);
+      color: white;
+      text-align: center;
+      padding: 60px 40px;
+      page-break-after: always;
+    }
+
+    .cover-icon {
+      width: 120px;
+      height: 120px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 40px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .cover-icon svg {
+      width: 64px;
+      height: 64px;
+      fill: white;
+    }
+
+    .cover h1 {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .cover .subtitle {
+      font-size: 22px;
+      font-weight: 300;
+      opacity: 0.9;
+      margin-bottom: 40px;
+    }
+
+    .cover .version {
+      font-size: 14px;
+      opacity: 0.6;
+      background: rgba(255,255,255,0.1);
+      padding: 8px 24px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .cover .date {
+      font-size: 13px;
+      opacity: 0.5;
+    }
+
+    /* Content */
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+
+    /* Table of contents */
+    .toc {
+      page-break-after: always;
+      padding: 60px 0;
+    }
+
+    .toc h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 30px;
+      padding-bottom: 12px;
+      border-bottom: 3px solid var(--telegram-blue);
+    }
+
+    .toc-list {
+      list-style: none;
+    }
+
+    .toc-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-100);
+      display: flex;
+      align-items: center;
+    }
+
+    .toc-list li a {
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .toc-list li a:hover {
+      color: var(--telegram-blue);
+    }
+
+    .toc-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: var(--telegram-blue);
+      color: white;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-right: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Sections */
+    .section {
+      page-break-before: always;
+      padding-top: 20px;
+    }
+
+    .section:first-of-type {
+      page-break-before: avoid;
+    }
+
+    h2 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 8px;
+      margin-top: 40px;
+    }
+
+    h2 .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: var(--telegram-blue);
+      color: white;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      margin-right: 12px;
+      vertical-align: middle;
+    }
+
+    .section-divider {
+      height: 3px;
+      background: linear-gradient(90deg, var(--telegram-blue), transparent);
+      margin-bottom: 24px;
+      border-radius: 2px;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin-top: 28px;
+      margin-bottom: 12px;
+    }
+
+    h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 14px;
+      color: var(--gray-600);
+    }
+
+    /* Info boxes */
+    .info-box {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+    }
+
+    .info-box.warning {
+      background: #fffbeb;
+      border-left-color: var(--orange);
+    }
+
+    .info-box.success {
+      background: #ecfdf5;
+      border-left-color: var(--green);
+    }
+
+    .info-box.danger {
+      background: #fef2f2;
+      border-left-color: var(--red);
+    }
+
+    .info-box strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--gray-800);
+    }
+
+    .info-box p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    thead th {
+      background: var(--gray-50);
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 600;
+      color: var(--gray-700);
+      border-bottom: 2px solid var(--gray-200);
+    }
+
+    tbody td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--gray-100);
+      color: var(--gray-600);
+    }
+
+    tbody tr:hover {
+      background: var(--gray-50);
+    }
+
+    /* Code */
+    code {
+      background: var(--gray-100);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      color: var(--gray-800);
+    }
+
+    pre {
+      background: var(--gray-900);
+      color: #e5e7eb;
+      padding: 20px;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin: 16px 0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+    }
+
+    /* Mock screens */
+    .screen-mock {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 0;
+      margin: 20px 0;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+    }
+
+    .screen-mock .mock-appbar {
+      background: var(--primary);
+      color: white;
+      padding: 14px 20px;
+      font-weight: 600;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .screen-mock .mock-appbar.dark {
+      background: var(--gray-900);
+    }
+
+    .screen-mock .mock-body {
+      padding: 20px;
+      min-height: 200px;
+    }
+
+    .mock-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      border: 1px solid var(--gray-200);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .mock-stat-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .mock-stat {
+      flex: 1;
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      border: 1px solid var(--gray-200);
+    }
+
+    .mock-stat .value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .mock-stat .label {
+      font-size: 12px;
+      color: var(--gray-500);
+      margin-top: 4px;
+    }
+
+    .mock-stat.green .value { color: var(--green); }
+    .mock-stat.purple .value { color: var(--purple); }
+
+    .mock-input {
+      background: white;
+      border: 1px solid var(--gray-300);
+      border-radius: 8px;
+      padding: 10px 14px;
+      width: 100%;
+      color: var(--gray-400);
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .mock-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-weight: 600;
+      font-size: 13px;
+      display: inline-block;
+    }
+
+    .mock-btn.telegram {
+      background: var(--telegram-blue);
+    }
+
+    .mock-btn.tonal {
+      background: #dbeafe;
+      color: var(--primary);
+    }
+
+    .mock-btn.danger {
+      background: #fef2f2;
+      color: var(--red);
+      border: 1px solid rgba(239,68,68,0.3);
+    }
+
+    .mock-progress {
+      height: 6px;
+      background: var(--gray-200);
+      border-radius: 3px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .mock-progress .fill {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--primary);
+    }
+
+    .mock-progress .fill.green {
+      background: var(--green);
+    }
+
+    .mock-navbar {
+      display: flex;
+      background: white;
+      border-top: 1px solid var(--gray-200);
+      padding: 8px 0;
+    }
+
+    .mock-nav-item {
+      flex: 1;
+      text-align: center;
+      padding: 6px;
+      font-size: 10px;
+      color: var(--gray-500);
+    }
+
+    .mock-nav-item.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .mock-nav-item .icon {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 2px;
+    }
+
+    .mock-switch {
+      width: 40px;
+      height: 22px;
+      background: var(--primary);
+      border-radius: 11px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .mock-switch::after {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      right: 2px;
+    }
+
+    .mock-switch.off {
+      background: var(--gray-300);
+    }
+
+    .mock-switch.off::after {
+      right: auto;
+      left: 2px;
+    }
+
+    .mock-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .mock-tag.active { background: rgba(59,130,246,0.15); color: var(--primary); }
+    .mock-tag.paused { background: var(--gray-100); color: var(--gray-500); }
+    .mock-tag.error { background: rgba(239,68,68,0.15); color: var(--red); }
+    .mock-tag.done { background: rgba(16,185,129,0.15); color: var(--green); }
+    .mock-tag.size { background: rgba(59,130,246,0.1); color: var(--primary); }
+
+    .mock-step-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin: 20px 0;
+    }
+
+    .mock-step {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .mock-step.active {
+      background: var(--telegram-blue);
+      color: white;
+    }
+
+    .mock-step.done {
+      background: var(--telegram-blue);
+      color: white;
+    }
+
+    .mock-step.pending {
+      background: transparent;
+      border: 2px solid var(--gray-300);
+      color: var(--gray-400);
+    }
+
+    .mock-step-line {
+      width: 60px;
+      height: 2px;
+      background: var(--gray-200);
+    }
+
+    .mock-step-line.done {
+      background: var(--telegram-blue);
+    }
+
+    .mock-step-labels {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      font-size: 11px;
+      color: var(--gray-500);
+      margin-top: 6px;
+    }
+
+    .mock-step-labels span.active {
+      color: var(--telegram-blue);
+      font-weight: 600;
+    }
+
+    /* Steps list */
+    .steps-list {
+      list-style: none;
+      counter-reset: step;
+    }
+
+    .steps-list li {
+      counter-increment: step;
+      padding: 12px 0 12px 50px;
+      position: relative;
+      border-left: 2px solid var(--gray-200);
+      margin-left: 15px;
+    }
+
+    .steps-list li:last-child {
+      border-left-color: transparent;
+    }
+
+    .steps-list li::before {
+      content: counter(step);
+      position: absolute;
+      left: -13px;
+      width: 26px;
+      height: 26px;
+      background: var(--telegram-blue);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Feature grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .feature-item {
+      background: var(--gray-50);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--gray-100);
+    }
+
+    .feature-item .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      font-size: 20px;
+    }
+
+    .feature-item .feature-icon.blue { background: rgba(59,130,246,0.15); }
+    .feature-item .feature-icon.green { background: rgba(16,185,129,0.15); }
+    .feature-item .feature-icon.purple { background: rgba(139,92,246,0.15); }
+    .feature-item .feature-icon.orange { background: rgba(245,158,11,0.15); }
+
+    .feature-item h4 {
+      margin-top: 0;
+      color: var(--gray-800);
+    }
+
+    .feature-item p {
+      font-size: 13px;
+      margin: 0;
+    }
+
+    /* Keyboard shortcuts */
+    kbd {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-300);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 12px;
+      font-family: 'SF Mono', monospace;
+      box-shadow: 0 1px 0 var(--gray-300);
+    }
+
+    /* Platform badges */
+    .platform-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 12px 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      background: var(--gray-100);
+      color: var(--gray-700);
+    }
+
+    .badge.android { background: #d1fae5; color: #065f46; }
+    .badge.windows { background: #dbeafe; color: #1e40af; }
+    .badge.macos { background: #f3e8ff; color: #6b21a8; }
+    .badge.linux { background: #fef3c7; color: #92400e; }
+
+    /* Caption */
+    .caption {
+      text-align: center;
+      font-size: 12px;
+      color: var(--gray-500);
+      font-style: italic;
+      margin-top: 8px;
+      margin-bottom: 20px;
+    }
+
+    /* Print */
+    @media print {
+      body { font-size: 12px; }
+      .cover { min-height: 100vh; }
+      .section { page-break-before: always; }
+      .screen-mock { break-inside: avoid; }
+      .info-box { break-inside: avoid; }
+      .mock-card { break-inside: avoid; }
+    }
+
+    /* Footer */
+    .page-footer {
+      text-align: center;
+      padding: 40px 0;
+      margin-top: 60px;
+      border-top: 1px solid var(--gray-200);
+      color: var(--gray-500);
+      font-size: 13px;
+    }
+
+    /* Numbered list */
+    ol {
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+
+    ol li {
+      margin-bottom: 6px;
+      color: var(--gray-600);
+    }
+
+    ul {
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+
+    ul li {
+      margin-bottom: 6px;
+      color: var(--gray-600);
+    }
+
+    strong {
+      color: var(--gray-800);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ==================== COVER ==================== -->
+<div class="cover">
+  <div class="cover-icon">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+    </svg>
+  </div>
+  <h1>Telegram Downloader</h1>
+  <p class="subtitle">Manual de Usuario</p>
+  <div class="version">Version 1.0.7 &middot; Multiplataforma</div>
+  <div class="platform-badges" style="justify-content: center; margin-top: 20px;">
+    <span class="badge android">Android</span>
+    <span class="badge windows">Windows</span>
+    <span class="badge macos">macOS</span>
+    <span class="badge linux">Linux</span>
+  </div>
+  <p class="date" style="margin-top: 30px;">Marzo 2026</p>
+</div>
+
+<!-- ==================== TOC ==================== -->
+<div class="content">
+  <div class="toc">
+    <h2>Contenido</h2>
+    <ol class="toc-list">
+      <li>
+        <span class="toc-number">1</span>
+        <a href="#intro">Introduccion</a>
+      </li>
+      <li>
+        <span class="toc-number">2</span>
+        <a href="#install">Instalacion y descarga</a>
+      </li>
+      <li>
+        <span class="toc-number">3</span>
+        <a href="#setup">Configuracion inicial (Asistente)</a>
+      </li>
+      <li>
+        <span class="toc-number">4</span>
+        <a href="#dashboard">Pantalla de Inicio (Dashboard)</a>
+      </li>
+      <li>
+        <span class="toc-number">5</span>
+        <a href="#search">Buscar contenido</a>
+      </li>
+      <li>
+        <span class="toc-number">6</span>
+        <a href="#downloads">Gestionar descargas</a>
+      </li>
+      <li>
+        <span class="toc-number">7</span>
+        <a href="#channels">Gestionar canales</a>
+      </li>
+      <li>
+        <span class="toc-number">8</span>
+        <a href="#settings">Ajustes</a>
+      </li>
+      <li>
+        <span class="toc-number">9</span>
+        <a href="#faq">Preguntas frecuentes</a>
+      </li>
+    </ol>
+  </div>
+
+  <!-- ==================== 1. INTRO ==================== -->
+  <div class="section" id="intro">
+    <h2><span class="section-num">1</span> Introduccion</h2>
+    <div class="section-divider"></div>
+
+    <p><strong>Telegram Downloader</strong> es una aplicacion multiplataforma desarrollada en Flutter que te permite buscar y descargar archivos directamente desde tus canales de Telegram. La app se conecta a Telegram usando la libreria nativa TDLib, proporcionando una experiencia rapida y segura.</p>
+
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-icon blue">&#x1F50D;</div>
+        <h4>Busqueda avanzada</h4>
+        <p>Busca archivos en todos tus canales habilitados con filtros de temporada y episodio.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon green">&#x2B07;</div>
+        <h4>Descargas en tiempo real</h4>
+        <p>Progreso en vivo, velocidad, ETA y control completo de cada descarga.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon purple">&#x1F4FA;</div>
+        <h4>Gestion de canales</h4>
+        <p>Activa o desactiva canales para personalizar tu experiencia de busqueda.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon orange">&#x1F3A8;</div>
+        <h4>Tema claro y oscuro</h4>
+        <p>Cambia entre modo claro y oscuro con un solo toque.</p>
+      </div>
+    </div>
+
+    <h3>Plataformas soportadas</h3>
+    <div class="platform-badges">
+      <span class="badge android">&#x1F4F1; Android</span>
+      <span class="badge windows">&#x1F4BB; Windows</span>
+      <span class="badge macos">&#x1F34E; macOS</span>
+      <span class="badge linux">&#x1F427; Linux</span>
+    </div>
+
+    <h3>Requisitos previos</h3>
+    <ul>
+      <li>Una cuenta de Telegram activa</li>
+      <li>Credenciales de API de Telegram (<strong>API ID</strong> y <strong>API Hash</strong>) obtenidas en <code>my.telegram.org</code></li>
+      <li>Estar suscrito a canales de Telegram que compartan archivos</li>
+    </ul>
+  </div>
+
+  <!-- ==================== 2. INSTALL ==================== -->
+  <div class="section" id="install">
+    <h2><span class="section-num">2</span> Instalacion y descarga</h2>
+    <div class="section-divider"></div>
+
+    <p>Los binarios precompilados estan disponibles en la pagina de <strong>GitHub Releases</strong> del proyecto. Cada actualizacion del codigo genera automaticamente nuevos binarios para las 4 plataformas.</p>
+
+    <h3>Archivos disponibles</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Plataforma</th>
+          <th>Archivo</th>
+          <th>Instrucciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Android</strong></td>
+          <td><code>telegram-downloader-android-vX.X.X.apk</code></td>
+          <td>Descarga el APK e instalalo (habilitar fuentes desconocidas)</td>
+        </tr>
+        <tr>
+          <td><strong>Windows</strong></td>
+          <td><code>telegram-downloader-windows-vX.X.X.zip</code></td>
+          <td>Descomprime y ejecuta el .exe</td>
+        </tr>
+        <tr>
+          <td><strong>macOS</strong></td>
+          <td><code>telegram-downloader-macos-vX.X.X.zip</code></td>
+          <td>Descomprime y arrastra a Aplicaciones</td>
+        </tr>
+        <tr>
+          <td><strong>Linux</strong></td>
+          <td><code>telegram-downloader-linux-vX.X.X.zip</code></td>
+          <td>Descomprime y ejecuta el binario</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <strong>&#x1F4A1; Consejo</strong>
+      <p>En macOS, la primera vez que abras la app puede que el sistema la bloquee. Ve a <strong>Ajustes del sistema > Privacidad y seguridad</strong> y pulsa "Abrir de todos modos".</p>
+    </div>
+
+    <h3>Compilacion desde codigo fuente</h3>
+    <p>Si prefieres compilar la app tu mismo, necesitaras Flutter SDK >= 3.2.0 instalado:</p>
+    <pre><code># Clonar el repositorio
+git clone https://github.com/kno/telegram-downloader-app.git
+cd telegram-downloader-app
+
+# Instalar dependencias
+flutter pub get
+
+# Ejecutar en modo desarrollo
+flutter run
+
+# Compilar para tu plataforma
+flutter build apk --release      # Android
+flutter build windows --release   # Windows
+flutter build macos --release     # macOS
+flutter build linux --release     # Linux</code></pre>
+  </div>
+
+  <!-- ==================== 3. SETUP ==================== -->
+  <div class="section" id="setup">
+    <h2><span class="section-num">3</span> Configuracion inicial</h2>
+    <div class="section-divider"></div>
+
+    <p>Al abrir la app por primera vez, se mostrara el <strong>Asistente de configuracion</strong>, un proceso guiado de 2 o 3 pasos para vincular tu cuenta de Telegram.</p>
+
+    <h3>Paso 1: Credenciales de Telegram</h3>
+
+    <!-- Mock: Setup Step 0 -->
+    <div class="screen-mock">
+      <div class="mock-appbar" style="background: white; color: var(--gray-800); justify-content: center;">
+        <div style="text-align: center;">
+          <div style="width: 50px; height: 50px; background: var(--telegram-blue); border-radius: 13px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          </div>
+          <strong>Telegram Downloader</strong><br>
+          <span style="font-size: 12px; color: var(--gray-500); font-weight: 400;">Configura tu cuenta de Telegram para comenzar</span>
+        </div>
+      </div>
+      <div style="padding: 0 20px;">
+        <div class="mock-step-indicator">
+          <div class="mock-step active">1</div>
+          <div class="mock-step-line"></div>
+          <div class="mock-step pending">2</div>
+        </div>
+        <div class="mock-step-labels">
+          <span class="active">Credenciales</span>
+          <span>Codigo</span>
+        </div>
+      </div>
+      <div class="mock-body">
+        <div class="mock-card">
+          <h4 style="margin-top: 0; margin-bottom: 4px;">Configuracion de Telegram</h4>
+          <p style="font-size: 12px; color: var(--gray-500); margin-bottom: 4px;">Necesitas tu API ID y API Hash para conectar la aplicacion con Telegram.</p>
+          <p style="font-size: 12px; color: var(--telegram-blue); margin-bottom: 16px;">Obten tus credenciales en my.telegram.org</p>
+          <div class="mock-input">&#x1F3F7; API ID &nbsp;&nbsp; <span style="color: var(--gray-400);">Ej: 12345678</span></div>
+          <div class="mock-input">&#x1F511; API Hash &nbsp;&nbsp; <span style="color: var(--gray-400);">Ej: a1b2c3d4e5f6...</span></div>
+          <div class="mock-input">&#x1F4DE; Numero de telefono &nbsp;&nbsp; <span style="color: var(--gray-400);">+34 600 000 000</span></div>
+          <div style="margin-top: 16px;">
+            <span class="mock-btn telegram" style="display: block; text-align: center; border-radius: 24px;">Continuar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Pantalla del Paso 1: Introduccion de credenciales API y numero de telefono</p>
+
+    <p>Debes introducir:</p>
+    <ul>
+      <li><strong>API ID</strong>: numero proporcionado por Telegram (ej: <code>12345678</code>)</li>
+      <li><strong>API Hash</strong>: cadena alfanumerica asociada a tu API ID</li>
+      <li><strong>Numero de telefono</strong>: con codigo de pais (ej: <code>+34 600000000</code>)</li>
+    </ul>
+
+    <div class="info-box warning">
+      <strong>&#x26A0; Importante: Obtener credenciales API</strong>
+      <p>Visita <code>my.telegram.org</code>, inicia sesion con tu telefono, ve a <strong>API Development Tools</strong> y crea una nueva aplicacion. Copia el <strong>api_id</strong> y <strong>api_hash</strong> generados.</p>
+    </div>
+
+    <h3>Paso 2: Codigo de verificacion</h3>
+
+    <!-- Mock: Setup Step 1 -->
+    <div class="screen-mock">
+      <div style="padding: 0 20px; padding-top: 20px;">
+        <div class="mock-step-indicator">
+          <div class="mock-step done">&#x2713;</div>
+          <div class="mock-step-line done"></div>
+          <div class="mock-step active">2</div>
+        </div>
+        <div class="mock-step-labels">
+          <span>Credenciales</span>
+          <span class="active">Codigo</span>
+        </div>
+      </div>
+      <div class="mock-body">
+        <div class="mock-card" style="text-align: center;">
+          <div style="font-size: 40px; color: var(--telegram-blue); margin-bottom: 12px;">&#x1F4E9;</div>
+          <h4 style="margin-top: 0;">Codigo de verificacion</h4>
+          <p style="font-size: 13px; color: var(--gray-500);">Hemos enviado un codigo a tu telefono.<br>Introducelo a continuacion.</p>
+          <div style="margin: 20px auto; max-width: 200px;">
+            <div class="mock-input" style="text-align: center; font-size: 24px; letter-spacing: 8px; font-weight: 700; color: var(--gray-800);">12345</div>
+          </div>
+          <span class="mock-btn telegram" style="display: block; text-align: center; border-radius: 24px;">Verificar</span>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Pantalla del Paso 2: Introduccion del codigo de verificacion de Telegram</p>
+
+    <p>Telegram enviara un codigo de 5 digitos a tu telefono (via SMS o mensaje de Telegram). Introducelo en el campo y pulsa <strong>Verificar</strong>.</p>
+
+    <h3>Paso 3: Verificacion en dos pasos (opcional)</h3>
+
+    <!-- Mock: Setup Step 2 -->
+    <div class="screen-mock">
+      <div style="padding: 0 20px; padding-top: 20px;">
+        <div class="mock-step-indicator">
+          <div class="mock-step done">&#x2713;</div>
+          <div class="mock-step-line done"></div>
+          <div class="mock-step done">&#x2713;</div>
+          <div class="mock-step-line done"></div>
+          <div class="mock-step active">3</div>
+        </div>
+        <div class="mock-step-labels">
+          <span>Credenciales</span>
+          <span>Codigo</span>
+          <span class="active">2FA</span>
+        </div>
+      </div>
+      <div class="mock-body">
+        <div class="mock-card" style="text-align: center;">
+          <div style="font-size: 40px; color: var(--telegram-blue); margin-bottom: 12px;">&#x1F512;</div>
+          <h4 style="margin-top: 0;">Verificacion en dos pasos</h4>
+          <p style="font-size: 13px; color: var(--gray-500);">Tu cuenta tiene verificacion en dos pasos activa.<br>Introduce tu contrasena de Telegram.</p>
+          <div style="margin: 20px auto; max-width: 300px;">
+            <div class="mock-input">&#x1F512; Contrasena de verificacion &nbsp;&nbsp; &#x1F441;</div>
+          </div>
+          <span class="mock-btn telegram" style="display: block; text-align: center; border-radius: 24px;">Verificar</span>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Pantalla del Paso 3: Contrasena 2FA (solo si esta activada en tu cuenta)</p>
+
+    <p>Si tu cuenta tiene activada la verificacion en dos pasos (2FA), se mostrara un tercer paso donde debes introducir tu contrasena. Si no tienes 2FA, la app pasara directamente a la pantalla principal.</p>
+
+    <div class="info-box success">
+      <strong>&#x2705; Listo</strong>
+      <p>Una vez completada la autenticacion, la app cargara tus canales automaticamente y mostraras la pantalla principal. No tendras que repetir este proceso a menos que cierres sesion.</p>
+    </div>
+  </div>
+
+  <!-- ==================== 4. DASHBOARD ==================== -->
+  <div class="section" id="dashboard">
+    <h2><span class="section-num">4</span> Pantalla de Inicio</h2>
+    <div class="section-divider"></div>
+
+    <p>La pantalla de Inicio (Dashboard) es lo primero que veras al abrir la app tras autenticarte. Muestra un resumen rapido del estado de la aplicacion.</p>
+
+    <!-- Mock: Dashboard -->
+    <div class="screen-mock">
+      <div class="mock-appbar">
+        <span>Telegram Downloader</span>
+        <span style="font-size: 20px;">&#x1F319;</span>
+      </div>
+      <div class="mock-body">
+        <div class="mock-stat-row">
+          <div class="mock-stat">
+            <div class="value">3</div>
+            <div class="label">&#x2B07; Activas</div>
+          </div>
+          <div class="mock-stat green">
+            <div class="value">12</div>
+            <div class="label">&#x2705; Completadas</div>
+          </div>
+          <div class="mock-stat purple">
+            <div class="value">8</div>
+            <div class="label">&#x1F4CB; Canales</div>
+          </div>
+        </div>
+
+        <h4 style="margin-top: 0; font-size: 14px;">Descargas activas</h4>
+
+        <div class="mock-card">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 24px; height: 24px; border: 2px solid var(--primary); border-top-color: transparent; border-radius: 50%; flex-shrink: 0;"></div>
+            <div style="flex: 1;">
+              <div style="font-size: 13px; font-weight: 600;">Breaking.Bad.S01E01.1080p.mkv</div>
+              <div class="mock-progress"><div class="fill" style="width: 67%;"></div></div>
+              <div style="font-size: 11px; color: var(--gray-500);">67.3% - 4.2 MB/s</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mock-card">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 24px; height: 24px; border: 2px solid var(--primary); border-top-color: transparent; border-radius: 50%; flex-shrink: 0;"></div>
+            <div style="flex: 1;">
+              <div style="font-size: 13px; font-weight: 600;">The.Office.S02E03.720p.mp4</div>
+              <div class="mock-progress"><div class="fill" style="width: 23%;"></div></div>
+              <div style="font-size: 11px; color: var(--gray-500);">23.1% - 2.8 MB/s</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mock-navbar">
+        <div class="mock-nav-item active"><span class="icon">&#x1F3E0;</span> Inicio</div>
+        <div class="mock-nav-item"><span class="icon">&#x1F50D;</span> Buscar</div>
+        <div class="mock-nav-item"><span class="icon">&#x2B07;</span> Descargas</div>
+        <div class="mock-nav-item"><span class="icon">&#x1F4CB;</span> Canales</div>
+        <div class="mock-nav-item"><span class="icon">&#x2699;</span> Ajustes</div>
+      </div>
+    </div>
+    <p class="caption">Pantalla de Inicio con tarjetas de estadisticas y descargas activas</p>
+
+    <h3>Elementos de la pantalla</h3>
+
+    <h4>Tarjetas de estadisticas</h4>
+    <p>Tres tarjetas muestran:</p>
+    <ul>
+      <li><strong>Activas</strong>: numero de descargas en curso</li>
+      <li><strong>Completadas</strong>: total de descargas finalizadas</li>
+      <li><strong>Canales</strong>: numero de canales disponibles</li>
+    </ul>
+
+    <h4>Descargas activas</h4>
+    <p>Debajo de las estadisticas se muestra la lista de descargas en progreso. Cada descarga muestra:</p>
+    <ul>
+      <li>Nombre del archivo</li>
+      <li>Barra de progreso visual</li>
+      <li>Porcentaje completado y velocidad de descarga</li>
+    </ul>
+
+    <h4>Boton de tema</h4>
+    <p>En la esquina superior derecha, el icono de sol/luna permite alternar entre el <strong>tema claro</strong> y el <strong>tema oscuro</strong>.</p>
+
+    <div class="info-box">
+      <strong>&#x1F504; Actualizar</strong>
+      <p>Puedes deslizar hacia abajo (pull-to-refresh) para recargar los datos de la pantalla de inicio.</p>
+    </div>
+  </div>
+
+  <!-- ==================== 5. SEARCH ==================== -->
+  <div class="section" id="search">
+    <h2><span class="section-num">5</span> Buscar contenido</h2>
+    <div class="section-divider"></div>
+
+    <p>La pantalla de Busqueda te permite encontrar archivos en todos tus canales de Telegram habilitados. Incluye filtros opcionales de temporada y episodio para series de television.</p>
+
+    <!-- Mock: Search -->
+    <div class="screen-mock">
+      <div class="mock-appbar">
+        <span>Buscar</span>
+      </div>
+      <div class="mock-body">
+        <div class="mock-input" style="display: flex; align-items: center;">
+          <span style="margin-right: 8px;">&#x1F50D;</span>
+          <span>Breaking Bad</span>
+          <span style="margin-left: auto; color: var(--gray-400);">&#x2716;</span>
+        </div>
+        <div style="display: flex; gap: 8px; margin-bottom: 4px;">
+          <div class="mock-input" style="flex: 1; margin-bottom: 0;">Temporada: <span style="color: var(--gray-800);">1</span></div>
+          <div class="mock-input" style="flex: 1; margin-bottom: 0;">Episodio: <span style="color: var(--gray-800);"></span></div>
+          <span class="mock-btn">Buscar</span>
+        </div>
+        <div style="font-size: 11px; color: var(--gray-500); margin-bottom: 16px;">5 canales habilitados</div>
+        <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 12px;">8 resultados</div>
+
+        <div class="mock-card">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="font-size: 13px; font-weight: 600; flex: 1;">Breaking.Bad.S01E01.Pilot.1080p.BluRay.mkv</div>
+            <span class="mock-tag size">2.4 GB</span>
+          </div>
+          <div style="font-size: 11px; color: var(--gray-500); margin-top: 4px;">Video 1080p BluRay x264 DTS</div>
+          <div style="font-size: 11px; color: var(--primary); margin-top: 4px;">&#x2708; Series HD Channel</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+            <span style="font-size: 11px; color: var(--gray-500);">&#x1F4C5; 15 ene 2025</span>
+            <span class="mock-btn tonal" style="padding: 6px 14px; font-size: 12px;">&#x2B07; Descargar</span>
+          </div>
+        </div>
+
+        <div class="mock-card">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="font-size: 13px; font-weight: 600; flex: 1;">Breaking.Bad.S01E02.Cats.in.the.Bag.720p.mp4</div>
+            <span class="mock-tag size">1.1 GB</span>
+          </div>
+          <div style="font-size: 11px; color: var(--gray-500); margin-top: 4px;">Video 720p WEB-DL AAC</div>
+          <div style="font-size: 11px; color: var(--primary); margin-top: 4px;">&#x2708; Series HD Channel</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+            <span style="font-size: 11px; color: var(--gray-500);">&#x1F4C5; 15 ene 2025</span>
+            <span class="mock-btn tonal" style="padding: 6px 14px; font-size: 12px; background: #d1fae5; color: var(--green);">&#x2713; Enviado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Pantalla de Busqueda con resultados y filtros de temporada</p>
+
+    <h3>Como buscar</h3>
+    <ol>
+      <li>Escribe el termino de busqueda en el campo principal (ej: nombre de serie, pelicula, etc.)</li>
+      <li><strong>Opcionalmente</strong>, rellena los campos de <strong>Temporada</strong> y <strong>Episodio</strong> para filtrar resultados de series</li>
+      <li>Pulsa el boton <strong>Buscar</strong> o la tecla Enter</li>
+      <li>Los resultados aparecen debajo, mostrando hasta 50 resultados por pagina</li>
+    </ol>
+
+    <h3>Tarjetas de resultado</h3>
+    <p>Cada resultado muestra:</p>
+    <ul>
+      <li><strong>Nombre del archivo</strong>: titulo completo</li>
+      <li><strong>Tamano</strong>: peso del archivo (ej: 2.4 GB)</li>
+      <li><strong>Descripcion</strong>: informacion adicional si esta disponible</li>
+      <li><strong>Canal de origen</strong>: nombre del canal (clickable para abrirlo en Telegram)</li>
+      <li><strong>Fecha</strong>: fecha de publicacion</li>
+      <li><strong>Boton Descargar</strong>: inicia la descarga del archivo</li>
+    </ul>
+
+    <h3>Filtro de temporada y episodio</h3>
+    <p>El filtro reconoce patrones comunes en nombres de archivos:</p>
+    <table>
+      <thead>
+        <tr><th>Patron</th><th>Ejemplo</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>S01E05</code></td><td>Breaking.Bad.<strong>S01E05</strong>.1080p.mkv</td></tr>
+        <tr><td><code>1x05</code></td><td>Breaking.Bad.<strong>1x05</strong>.mkv</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Paginacion</h3>
+    <p>Si hay mas de 50 resultados, aparecen botones de <strong>Anterior</strong> y <strong>Siguiente</strong> en la parte inferior para navegar entre paginas.</p>
+
+    <div class="info-box warning">
+      <strong>&#x26A0; Nota</strong>
+      <p>Solo se busca en los canales que tengas <strong>habilitados</strong>. Si no obtienes resultados, verifica la pantalla de Canales.</p>
+    </div>
+  </div>
+
+  <!-- ==================== 6. DOWNLOADS ==================== -->
+  <div class="section" id="downloads">
+    <h2><span class="section-num">6</span> Gestionar descargas</h2>
+    <div class="section-divider"></div>
+
+    <p>La pantalla de Descargas muestra todas las descargas organizadas por estado. Desde aqui puedes pausar, reanudar, eliminar o guardar archivos completados.</p>
+
+    <!-- Mock: Downloads -->
+    <div class="screen-mock">
+      <div class="mock-appbar">
+        <span>Descargas</span>
+      </div>
+      <div class="mock-body">
+        <!-- Active section -->
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+          <div style="width: 4px; height: 20px; background: var(--primary); border-radius: 2px;"></div>
+          <strong style="font-size: 13px;">Activas (2)</strong>
+        </div>
+
+        <div class="mock-card">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="flex: 1;">
+              <div style="font-size: 13px; font-weight: 600;">Breaking.Bad.S01E01.1080p.mkv</div>
+              <div style="display: flex; gap: 8px; margin-top: 4px;">
+                <span class="mock-tag active">Descargando</span>
+                <span style="font-size: 11px; color: var(--gray-500);">2.4 GB</span>
+              </div>
+            </div>
+            <div style="display: flex; gap: 4px;">
+              <span style="font-size: 18px; color: var(--gray-500); cursor: pointer;">&#x23F8;</span>
+              <span style="font-size: 18px; color: var(--red); cursor: pointer;">&#x1F5D1;</span>
+            </div>
+          </div>
+          <div class="mock-progress" style="margin-top: 8px;"><div class="fill" style="width: 67%;"></div></div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--gray-500); margin-top: 4px;">
+            <span>67.3%</span>
+            <span>4.2 MB/s</span>
+            <span>ETA: 3m 22s</span>
+          </div>
+        </div>
+
+        <div class="mock-card">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="flex: 1;">
+              <div style="font-size: 13px; font-weight: 600;">Movie.2024.1080p.WEB-DL.mp4</div>
+              <div style="display: flex; gap: 8px; margin-top: 4px;">
+                <span class="mock-tag active">En cola</span>
+                <span style="font-size: 11px; color: var(--gray-500);">4.7 GB</span>
+              </div>
+            </div>
+            <div style="display: flex; gap: 4px;">
+              <span style="font-size: 18px; color: var(--gray-500); cursor: pointer;">&#x23F8;</span>
+              <span style="font-size: 18px; color: var(--red); cursor: pointer;">&#x1F5D1;</span>
+            </div>
+          </div>
+          <div class="mock-progress" style="margin-top: 8px;"><div class="fill" style="width: 0%;"></div></div>
+        </div>
+
+        <!-- Completed section -->
+        <div style="display: flex; align-items: center; gap: 8px; margin-top: 16px; margin-bottom: 12px;">
+          <div style="width: 4px; height: 20px; background: var(--green); border-radius: 2px;"></div>
+          <strong style="font-size: 13px;">Completadas (1)</strong>
+        </div>
+
+        <div class="mock-card">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="flex: 1;">
+              <div style="font-size: 13px; font-weight: 600;">The.Office.S01.Pack.zip</div>
+              <div style="display: flex; gap: 8px; margin-top: 4px;">
+                <span class="mock-tag done">Completada</span>
+                <span style="font-size: 11px; color: var(--gray-500);">8.2 GB</span>
+              </div>
+            </div>
+            <div style="display: flex; gap: 4px;">
+              <span style="font-size: 18px; color: var(--primary); cursor: pointer;">&#x1F4BE;</span>
+              <span style="font-size: 18px; color: var(--red); cursor: pointer;">&#x1F5D1;</span>
+            </div>
+          </div>
+          <div class="mock-progress" style="margin-top: 8px;"><div class="fill green" style="width: 100%;"></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Pantalla de Descargas con secciones por estado</p>
+
+    <h3>Secciones de descargas</h3>
+    <p>Las descargas se agrupan en cuatro categorias:</p>
+    <table>
+      <thead>
+        <tr><th>Seccion</th><th>Color</th><th>Descripcion</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Activas</strong></td><td style="color: var(--primary);">&#x25CF; Azul</td><td>Descargas en curso o en cola</td></tr>
+        <tr><td><strong>Pausadas</strong></td><td style="color: var(--gray-500);">&#x25CF; Gris</td><td>Descargas detenidas manualmente</td></tr>
+        <tr><td><strong>Con errores</strong></td><td style="color: var(--red);">&#x25CF; Rojo</td><td>Descargas que han fallado</td></tr>
+        <tr><td><strong>Completadas</strong></td><td style="color: var(--green);">&#x25CF; Verde</td><td>Descargas finalizadas con exito</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Acciones por descarga</h3>
+    <table>
+      <thead>
+        <tr><th>Accion</th><th>Icono</th><th>Cuando aparece</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Pausar</strong></td><td>&#x23F8;</td><td>Mientras la descarga esta activa</td></tr>
+        <tr><td><strong>Reanudar</strong></td><td>&#x25B6;</td><td>Cuando esta pausada o con error</td></tr>
+        <tr><td><strong>Guardar como</strong></td><td>&#x1F4BE;</td><td>Cuando la descarga esta completada</td></tr>
+        <tr><td><strong>Eliminar</strong></td><td>&#x1F5D1;</td><td>Siempre disponible</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Eliminar una descarga</h3>
+    <p>Al pulsar el boton de eliminar, aparecen tres opciones:</p>
+    <ul>
+      <li><strong>Solo quitar</strong>: elimina la descarga de la lista pero mantiene el archivo</li>
+      <li><strong>+ Borrar archivo</strong>: elimina la descarga y tambien borra el archivo del disco</li>
+      <li><strong>Cancelar</strong>: vuelve a la vista normal sin hacer nada</li>
+    </ul>
+
+    <h3>Informacion de progreso</h3>
+    <p>Las descargas activas muestran informacion detallada en tiempo real:</p>
+    <ul>
+      <li><strong>Porcentaje</strong>: progreso numerico y barra visual</li>
+      <li><strong>Velocidad</strong>: velocidad actual de descarga (ej: 4.2 MB/s)</li>
+      <li><strong>ETA</strong>: tiempo estimado restante (ej: 3m 22s)</li>
+    </ul>
+
+    <h3>Guardar archivos completados</h3>
+    <p>Cuando una descarga se completa, puedes usar <strong>Guardar como</strong> para copiar el archivo a la ubicacion que prefieras. Se abrira un selector de archivos del sistema donde podras elegir la carpeta de destino.</p>
+
+    <div class="info-box">
+      <strong>&#x1F4A1; Carpeta por defecto</strong>
+      <p>Puedes configurar una carpeta de descarga por defecto en los Ajustes para no tener que elegir la ubicacion cada vez.</p>
+    </div>
+  </div>
+
+  <!-- ==================== 7. CHANNELS ==================== -->
+  <div class="section" id="channels">
+    <h2><span class="section-num">7</span> Gestionar canales</h2>
+    <div class="section-divider"></div>
+
+    <p>La pantalla de Canales te permite controlar en cuales de tus canales de Telegram se realizan las busquedas. Solo se buscara contenido en los canales <strong>habilitados</strong>.</p>
+
+    <!-- Mock: Channels -->
+    <div class="screen-mock">
+      <div class="mock-appbar">
+        <span>Canales</span>
+        <span style="font-size: 18px;">&#x1F504;</span>
+      </div>
+      <div class="mock-body">
+        <div class="mock-input" style="display: flex; align-items: center;">
+          <span style="margin-right: 8px;">&#x1F50D;</span>
+          <span style="color: var(--gray-400);">Filtrar canales...</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <span style="font-size: 12px; color: var(--gray-500);">5 de 8 habilitados</span>
+          <div>
+            <span style="font-size: 12px; color: var(--primary); font-weight: 500; margin-right: 12px; cursor: pointer;">Todos</span>
+            <span style="font-size: 12px; color: var(--primary); font-weight: 500; cursor: pointer;">Ninguno</span>
+          </div>
+        </div>
+
+        <div class="mock-card" style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 36px; height: 36px; background: rgba(59,130,246,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary); font-size: 13px; flex-shrink: 0;">1</div>
+          <div style="flex: 1;">
+            <div style="font-size: 13px; font-weight: 600;">Series HD Channel</div>
+            <div style="font-size: 11px; color: var(--gray-500);">@serieshd</div>
+          </div>
+          <div class="mock-switch"></div>
+        </div>
+
+        <div class="mock-card" style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 36px; height: 36px; background: rgba(59,130,246,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary); font-size: 13px; flex-shrink: 0;">2</div>
+          <div style="flex: 1;">
+            <div style="font-size: 13px; font-weight: 600;">Peliculas 4K</div>
+            <div style="font-size: 11px; color: var(--gray-500);">@peliculas4k</div>
+          </div>
+          <div class="mock-switch"></div>
+        </div>
+
+        <div class="mock-card" style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 36px; height: 36px; background: var(--gray-100); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--gray-400); font-size: 13px; flex-shrink: 0;">3</div>
+          <div style="flex: 1;">
+            <div style="font-size: 13px; font-weight: 600;">Musica FLAC</div>
+            <div style="font-size: 11px; color: var(--gray-500);">@musicaflac</div>
+          </div>
+          <div class="mock-switch off"></div>
+        </div>
+
+        <div class="mock-card" style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 36px; height: 36px; background: var(--gray-100); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--gray-400); font-size: 13px; flex-shrink: 0;">4</div>
+          <div style="flex: 1;">
+            <div style="font-size: 13px; font-weight: 600;">Documentales</div>
+            <div style="font-size: 11px; color: var(--gray-500);">ID: -1001234567890</div>
+          </div>
+          <div class="mock-switch off"></div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Pantalla de Canales con switches para habilitar/deshabilitar canales</p>
+
+    <h3>Funciones principales</h3>
+
+    <h4>Habilitar/Deshabilitar canales</h4>
+    <p>Cada canal tiene un <strong>interruptor (switch)</strong> que puedes activar o desactivar. Solo los canales activados se incluiran en las busquedas.</p>
+
+    <h4>Filtrar canales</h4>
+    <p>Usa el campo de busqueda en la parte superior para filtrar la lista por nombre. Util si tienes muchos canales.</p>
+
+    <h4>Acciones masivas</h4>
+    <ul>
+      <li><strong>Todos</strong>: habilita todos los canales de una vez</li>
+      <li><strong>Ninguno</strong>: deshabilita todos los canales de una vez</li>
+    </ul>
+
+    <h4>Recargar canales</h4>
+    <p>Pulsa el icono de recarga en la barra superior para volver a obtener la lista de canales desde Telegram. Esto es util si te has suscrito a un nuevo canal.</p>
+
+    <div class="info-box">
+      <strong>&#x1F4A1; Consejo</strong>
+      <p>Los canales que muestran <code>@nombre</code> son canales publicos. Los que muestran <code>ID: -100...</code> son canales/grupos privados.</p>
+    </div>
+  </div>
+
+  <!-- ==================== 8. SETTINGS ==================== -->
+  <div class="section" id="settings">
+    <h2><span class="section-num">8</span> Ajustes</h2>
+    <div class="section-divider"></div>
+
+    <p>La pantalla de Ajustes permite configurar la apariencia, la carpeta de descargas y gestionar tu cuenta de Telegram.</p>
+
+    <!-- Mock: Settings -->
+    <div class="screen-mock">
+      <div class="mock-appbar">
+        <span>Ajustes</span>
+      </div>
+      <div class="mock-body">
+        <!-- Account card -->
+        <div class="mock-card">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <div style="width: 32px; height: 32px; background: var(--telegram-blue); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </div>
+            <strong style="font-size: 14px;">Cuenta de Telegram</strong>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 42px; height: 42px; background: rgba(0,136,204,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--telegram-blue); font-size: 16px; flex-shrink: 0;">J</div>
+            <div style="flex: 1;">
+              <div style="font-size: 14px; font-weight: 600;">Juan Garcia</div>
+              <div style="font-size: 12px; color: var(--gray-500);">@juangarcia</div>
+            </div>
+            <span style="background: rgba(16,185,129,0.15); color: var(--green); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px;">Conectado</span>
+          </div>
+          <div style="margin-top: 14px;">
+            <span class="mock-btn danger" style="font-size: 12px; padding: 8px 16px;">&#x1F6AA; Cerrar sesion</span>
+          </div>
+        </div>
+
+        <!-- Theme card -->
+        <div class="mock-card">
+          <strong style="font-size: 14px; display: block; margin-bottom: 8px;">Apariencia</strong>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 13px;">Modo oscuro</div>
+              <div style="font-size: 11px; color: var(--gray-500);">Desactivado</div>
+            </div>
+            <div class="mock-switch off"></div>
+          </div>
+        </div>
+
+        <!-- Downloads card -->
+        <div class="mock-card">
+          <strong style="font-size: 14px; display: block; margin-bottom: 10px;">Descargas</strong>
+          <div style="display: flex; align-items: start; gap: 8px;">
+            <span>&#x1F4C1;</span>
+            <div>
+              <div style="font-size: 13px;">Carpeta de destino por defecto</div>
+              <div style="font-size: 12px; color: var(--gray-500); font-style: italic;">Sin configurar</div>
+            </div>
+          </div>
+          <div style="margin-top: 10px;">
+            <span class="mock-btn danger" style="background: white; color: var(--gray-700); border: 1px solid var(--gray-300); font-size: 12px; padding: 6px 14px;">&#x1F4C2; Cambiar</span>
+          </div>
+        </div>
+
+        <!-- About card -->
+        <div class="mock-card">
+          <strong style="font-size: 14px; display: block; margin-bottom: 4px;">Acerca de</strong>
+          <div style="font-size: 13px;">Telegram Downloader v1.0.7</div>
+          <div style="font-size: 12px; color: var(--gray-500);">Cliente multiplataforma para gestionar descargas de Telegram.</div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Pantalla de Ajustes con cuenta, apariencia, descargas e informacion</p>
+
+    <h3>Secciones de ajustes</h3>
+
+    <h4>Cuenta de Telegram</h4>
+    <p>Muestra tu nombre y nombre de usuario de Telegram, junto con el estado de conexion. Desde aqui puedes:</p>
+    <ul>
+      <li><strong>Cerrar sesion</strong>: desvincula tu cuenta de Telegram. Deberas volver a completar el asistente de configuracion para usar la app.</li>
+    </ul>
+
+    <div class="info-box danger">
+      <strong>&#x26A0; Cerrar sesion</strong>
+      <p>Al cerrar sesion se borraran tus credenciales almacenadas. Necesitaras tu API ID, API Hash y numero de telefono para volver a conectarte.</p>
+    </div>
+
+    <h4>Apariencia</h4>
+    <p>Alterna entre el <strong>modo claro</strong> y el <strong>modo oscuro</strong> de la interfaz. La preferencia se guarda automaticamente.</p>
+
+    <h4>Descargas</h4>
+    <p>Configura la <strong>carpeta de destino por defecto</strong> donde se guardaran los archivos descargados:</p>
+    <ul>
+      <li><strong>Cambiar</strong>: abre un selector de carpetas del sistema</li>
+      <li><strong>Borrar</strong>: elimina la carpeta configurada (aparece solo si hay una seleccionada)</li>
+    </ul>
+
+    <h4>Acerca de</h4>
+    <p>Muestra la version de la aplicacion e informacion general.</p>
+  </div>
+
+  <!-- ==================== 9. FAQ ==================== -->
+  <div class="section" id="faq">
+    <h2><span class="section-num">9</span> Preguntas frecuentes</h2>
+    <div class="section-divider"></div>
+
+    <h4>&#x2753; No encuentro resultados al buscar</h4>
+    <p>Verifica que tienes canales habilitados en la pantalla de Canales. Tambien asegurate de que los canales a los que estas suscrito compartan el tipo de contenido que buscas.</p>
+
+    <h4>&#x2753; La app muestra "No hay canales" en la pantalla de Canales</h4>
+    <p>Pulsa el boton de recarga (&#x1F504;) en la barra superior. Si es la primera vez, la app necesita obtener la lista de canales desde Telegram, lo cual puede tardar unos segundos.</p>
+
+    <h4>&#x2753; La descarga se queda en "En cola" y no avanza</h4>
+    <p>Telegram tiene limites de descargas simultaneas. Espera a que se completen las descargas activas. Si persiste, intenta pausar y reanudar la descarga.</p>
+
+    <h4>&#x2753; Error de autenticacion al iniciar la app</h4>
+    <p>Si tus credenciales API han cambiado o tu sesion ha expirado, ve a Ajustes y cierra sesion. Luego vuelve a completar el asistente de configuracion.</p>
+
+    <h4>&#x2753; En macOS la app no se abre</h4>
+    <p>macOS puede bloquear aplicaciones descargadas de internet. Ve a <strong>Ajustes del sistema > Privacidad y seguridad</strong> y pulsa "Abrir de todos modos" junto al aviso sobre Telegram Downloader.</p>
+
+    <h4>&#x2753; &iquest;Donde se obtienen el API ID y API Hash?</h4>
+    <ol>
+      <li>Ve a <code>my.telegram.org</code></li>
+      <li>Inicia sesion con tu numero de telefono</li>
+      <li>Ve a <strong>API Development Tools</strong></li>
+      <li>Crea una nueva aplicacion (o usa la existente)</li>
+      <li>Copia los valores de <strong>api_id</strong> y <strong>api_hash</strong></li>
+    </ol>
+
+    <h4>&#x2753; &iquest;Puedo usar la app en varias plataformas a la vez?</h4>
+    <p>Si, pero cada instalacion necesita su propia autenticacion. Ten en cuenta que Telegram puede limitar el numero de sesiones activas simultaneas.</p>
+
+    <h4>&#x2753; &iquest;Donde se guardan los archivos descargados?</h4>
+    <p>Por defecto, los archivos se almacenan en la carpeta interna de la aplicacion. Puedes configurar una carpeta de destino por defecto en los Ajustes, o usar "Guardar como" en cada descarga completada para elegir donde guardarla.</p>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <div class="page-footer">
+    <p><strong>Telegram Downloader</strong> v1.0.7</p>
+    <p>Desarrollado con Flutter &middot; Marzo 2026</p>
+  </div>
+</div>
+
+</body>
+</html>
