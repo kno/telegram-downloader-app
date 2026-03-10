@@ -1,6 +1,19 @@
 # Telegram Downloader - App Multiplataforma
 
-Aplicacion Flutter multiplataforma (Android, Windows, macOS) para gestionar descargas de Telegram. Se conecta al backend del servidor Telegram Torznab mediante la API REST v2.
+Aplicacion Flutter multiplataforma (Android, Windows, macOS, Linux) para gestionar descargas de Telegram. Se conecta al backend del servidor Telegram Torznab mediante la API REST v2.
+
+## Descargas
+
+Binarios precompilados disponibles en [GitHub Releases](https://github.com/kno/telegram-downloader-app/releases/latest):
+
+| Plataforma | Archivo |
+|------------|---------|
+| Android | `telegram-downloader-android-vX.X.X.apk` |
+| Linux | `telegram-downloader-linux-vX.X.X.zip` |
+| macOS | `telegram-downloader-macos-vX.X.X.zip` |
+| Windows | `telegram-downloader-windows-vX.X.X.zip` |
+
+Cada push a `main` genera automaticamente una nueva release con binarios para las 4 plataformas.
 
 ## Requisitos
 
@@ -8,6 +21,7 @@ Aplicacion Flutter multiplataforma (Android, Windows, macOS) para gestionar desc
 - Para Android: Android SDK, JDK 17+
 - Para Windows: Visual Studio 2022 con "Desktop development with C++"
 - Para macOS: Xcode 14+
+- Para Linux: clang, cmake, ninja-build, pkg-config, libgtk-3-dev, liblzma-dev
 
 ## Instalacion
 
@@ -31,6 +45,9 @@ flutter run -d windows
 # macOS
 flutter run -d macos
 
+# Linux
+flutter run -d linux
+
 # Modo debug con hot-reload
 flutter run
 ```
@@ -49,6 +66,9 @@ flutter build windows --release
 
 # macOS
 flutter build macos --release
+
+# Linux
+flutter build linux --release
 ```
 
 ## Configuracion
@@ -83,32 +103,31 @@ Todos los endpoints (excepto health) requieren `?apikey=TU_API_KEY`.
 ## Estructura del proyecto
 
 ```
-mobile_app/
-  lib/
-    main.dart                    # Entry point + MaterialApp + navegacion
-    models/
-      channel.dart               # Modelo de canal
-      download.dart              # Modelo de descarga con constantes de estado
-      search_result.dart         # Modelo de resultado de busqueda
-      session_stats.dart         # Estadisticas de sesion
-    services/
-      api_service.dart           # Cliente HTTP para API v2
-      websocket_service.dart     # WebSocket con auto-reconexion
-      storage_service.dart       # Persistencia local (SharedPreferences)
-    providers/
-      settings_provider.dart     # API key, URL del servidor
-      channels_provider.dart     # Canales con estado enabled/disabled
-      downloads_provider.dart    # Descargas con WebSocket
-      theme_provider.dart        # Tema claro/oscuro
-    screens/
-      dashboard_screen.dart      # Inicio: stats + descargas activas
-      search_screen.dart         # Buscar con filtros temporada/episodio
-      downloads_screen.dart      # Todas las descargas con progreso
-      channels_screen.dart       # Gestionar canales habilitados
-      settings_screen.dart       # Configuracion + test conexion
-    widgets/
-      search_result_card.dart    # Tarjeta de resultado con boton descargar
-      download_row.dart          # Fila de descarga con acciones
-    utils/
-      formatters.dart            # formatSize, formatSpeed, formatEta, formatDate
+lib/
+  main.dart                    # Entry point + MaterialApp + navegacion
+  models/
+    channel.dart               # Modelo de canal
+    download.dart              # Modelo de descarga con constantes de estado
+    search_result.dart         # Modelo de resultado de busqueda
+    session_stats.dart         # Estadisticas de sesion
+  services/
+    api_service.dart           # Cliente HTTP para API v2
+    websocket_service.dart     # WebSocket con auto-reconexion
+    storage_service.dart       # Persistencia local (SharedPreferences)
+  providers/
+    settings_provider.dart     # API key, URL del servidor
+    channels_provider.dart     # Canales con estado enabled/disabled
+    downloads_provider.dart    # Descargas con WebSocket
+    theme_provider.dart        # Tema claro/oscuro
+  screens/
+    dashboard_screen.dart      # Inicio: stats + descargas activas
+    search_screen.dart         # Buscar con filtros temporada/episodio
+    downloads_screen.dart      # Todas las descargas con progreso
+    channels_screen.dart       # Gestionar canales habilitados
+    settings_screen.dart       # Configuracion + test conexion
+  widgets/
+    search_result_card.dart    # Tarjeta de resultado con boton descargar
+    download_row.dart          # Fila de descarga con acciones
+  utils/
+    formatters.dart            # formatSize, formatSpeed, formatEta, formatDate
 ```
