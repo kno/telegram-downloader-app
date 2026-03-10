@@ -227,7 +227,7 @@ class TelegramService {
     return _service!.sendSync(request);
   }
 
-  /// Search for documents across specified channels.
+  /// Search for documents, videos, and audio across specified channels.
   /// Returns a list of search result maps compatible with SearchResult model.
   Future<List<Map<String, dynamic>>> searchMessages({
     required String query,
@@ -241,74 +241,125 @@ class TelegramService {
 
     debugPrint('[Search] query="$query", channels=${channels.length}, perChannel=$perChannel');
 
+    const filters = [
+      'searchMessagesFilterDocument',
+      'searchMessagesFilterVideo',
+      'searchMessagesFilterAudio',
+    ];
+
     for (final ch in channels) {
       try {
         final chatId = int.parse(ch['chat_id'] as String);
         final channelName = ch['name'] ?? ch['chat_id'];
         debugPrint('[Search] Searching channel "$channelName" (chatId=$chatId)...');
 
-        final request = {
-          '@type': 'searchChatMessages',
-          'chat_id': chatId,
-          'query': query,
-          'from_message_id': 0,
-          'offset': 0,
-          'limit': perChannel,
-          'filter': {'@type': 'searchMessagesFilterDocument'},
-        };
-        debugPrint('[Search] Request: $request');
+        final seenMsgIds = <int>{};
 
-        final result = await _service!.sendSync(request);
+        for (final filterType in filters) {
+          final request = {
+            '@type': 'searchChatMessages',
+            'chat_id': chatId,
+            'query': query,
+            'from_message_id': 0,
+            'offset': 0,
+            'limit': perChannel,
+            'filter': {'@type': filterType},
+          };
+          debugPrint('[Search] Request (filter=$filterType): $request');
 
-        final totalCount = result['total_count'] ?? 0;
-        final messages = (result['messages'] as List<dynamic>?) ?? [];
-        debugPrint('[Search] Channel "$channelName": total_count=$totalCount, messages returned=${messages.length}');
+          final result = await _service!.sendSync(request);
 
-        if (messages.isEmpty && totalCount == 0) {
-          debugPrint('[Search] Channel "$channelName": No results for "$query"');
-        }
+          final totalCount = result['total_count'] ?? 0;
+          final messages = (result['messages'] as List<dynamic>?) ?? [];
+          debugPrint('[Search] Channel "$channelName" filter=$filterType: total_count=$totalCount, messages returned=${messages.length}');
 
-        for (final msg in messages) {
-          final msgMap = msg as Map<String, dynamic>;
-          final content = msgMap['content'] as Map<String, dynamic>?;
-          if (content == null) {
-            debugPrint('[Search] Channel "$channelName": msg ${msgMap['id']} has null content');
-            continue;
-          }
-          if (content['@type'] != 'messageDocument') {
-            debugPrint('[Search] Channel "$channelName": msg ${msgMap['id']} type=${content['@type']} (skipped, not document)');
-            continue;
+          if (messages.isEmpty && totalCount == 0) {
+            debugPrint('[Search] Channel "$channelName": No results for "$query" with filter=$filterType');
           }
 
-          final document = content['document'] as Map<String, dynamic>?;
-          if (document == null) {
-            debugPrint('[Search] Channel "$channelName": msg ${msgMap['id']} has null document');
-            continue;
+          for (final msg in messages) {
+            final msgMap = msg as Map<String, dynamic>;
+            final msgId = msgMap['id'] as int;
+
+            if (seenMsgIds.contains(msgId)) {
+              debugPrint('[Search] Channel "$channelName": msg $msgId already seen, skipping duplicate');
+              continue;
+            }
+
+            final content = msgMap['content'] as Map<String, dynamic>?;
+            if (content == null) {
+              debugPrint('[Search] Channel "$channelName": msg $msgId has null content');
+              continue;
+            }
+
+            final contentType = content['@type'] as String?;
+            String fileName;
+            int fileSize;
+
+            if (contentType == 'messageDocument') {
+              final document = content['document'] as Map<String, dynamic>?;
+              if (document == null) {
+                debugPrint('[Search] Channel "$channelName": msg $msgId has null document');
+                continue;
+              }
+              final file = document['document'] as Map<String, dynamic>?;
+              fileName = document['file_name'] as String? ?? 'Unknown';
+              fileSize = file?['size'] as int? ?? file?['expected_size'] as int? ?? 0;
+            } else if (contentType == 'messageVideo') {
+              final video = content['video'] as Map<String, dynamic>?;
+              if (video == null) {
+                debugPrint('[Search] Channel "$channelName": msg $msgId has null video');
+                continue;
+              }
+              final file = video['video'] as Map<String, dynamic>?;
+              final caption = (content['caption'] as Map<String, dynamic>?)?['text'] as String? ?? '';
+              fileName = video['file_name'] as String? ?? (caption.isNotEmpty ? caption : 'Video');
+              fileSize = file?['size'] as int? ?? file?['expected_size'] as int? ?? 0;
+            } else if (contentType == 'messageAudio') {
+              final audio = content['audio'] as Map<String, dynamic>?;
+              if (audio == null) {
+                debugPrint('[Search] Channel "$channelName": msg $msgId has null audio');
+                continue;
+              }
+              final file = audio['audio'] as Map<String, dynamic>?;
+              fileName = audio['file_name'] as String? ?? audio['title'] as String? ?? 'Audio';
+              fileSize = file?['size'] as int? ?? file?['expected_size'] as int? ?? 0;
+            } else {
+              debugPrint('[Search] Channel "$channelName": msg $msgId type=$contentType (skipped, not document/video/audio)');
+              continue;
+            }
+
+            final date = msgMap['date'] as int? ?? 0;
+            final caption = (content['caption'] as Map<String, dynamic>?)?['text'] as String? ?? '';
+            final threadId = msgMap['message_thread_id'] as int? ?? 0;
+
+            debugPrint('[Search] Channel "$channelName": Found "$fileName" (${fileSize}B) msgId=$msgId threadId=$threadId type=$contentType');
+
+            String link;
+            if (ch['username'] != null) {
+              link = threadId != 0
+                  ? 'https://t.me/${ch['username']}/$threadId/$msgId'
+                  : 'https://t.me/${ch['username']}/$msgId';
+            } else {
+              link = threadId != 0
+                  ? 'https://t.me/c/${chatId.abs()}/$threadId/$msgId'
+                  : 'https://t.me/c/${chatId.abs()}/$msgId';
+            }
+
+            seenMsgIds.add(msgId);
+            allItems.add({
+              'title': fileName,
+              'guid': '${ch['chat_id']}:$msgId',
+              'link': link,
+              'pubDate': DateTime.fromMillisecondsSinceEpoch(date * 1000).toIso8601String(),
+              'size': fileSize,
+              'description': caption,
+              'categoryId': ch['category_id'] ?? 0,
+              'chatId': ch['chat_id'],
+              'msgId': msgId,
+              'channelName': ch['name'] ?? '',
+            });
           }
-
-          final file = document['document'] as Map<String, dynamic>?;
-          final fileName = document['file_name'] as String? ?? 'Unknown';
-          final fileSize = file?['size'] as int? ?? file?['expected_size'] as int? ?? 0;
-          final msgId = msgMap['id'] as int;
-          final date = msgMap['date'] as int? ?? 0;
-          final caption = (content['caption'] as Map<String, dynamic>?)?['text'] as String? ?? '';
-
-          debugPrint('[Search] Channel "$channelName": Found "$fileName" (${fileSize}B) msgId=$msgId');
-
-          allItems.add({
-            'title': fileName,
-            'guid': '${ch['chat_id']}:$msgId',
-            'link': ch['username'] != null
-                ? 'https://t.me/${ch['username']}/$msgId'
-                : 'https://t.me/c/${chatId.abs()}/$msgId',
-            'pubDate': DateTime.fromMillisecondsSinceEpoch(date * 1000).toIso8601String(),
-            'size': fileSize,
-            'description': caption,
-            'categoryId': ch['category_id'] ?? 0,
-            'chatId': ch['chat_id'],
-            'msgId': msgId,
-            'channelName': ch['name'] ?? '',
-          });
         }
       } catch (e, stackTrace) {
         debugPrint('[Search] ERROR in channel ${ch['name'] ?? ch['chat_id']}: $e');
