@@ -83,13 +83,19 @@ class _DownloadRowState extends State<DownloadRow> {
       return;
     }
 
+    final fileBytes = await File(dl.localPath!).readAsBytes();
     final destPath = await FilePicker.platform.saveFile(
       fileName: dl.name,
+      bytes: fileBytes,
     );
     if (destPath == null) return; // user cancelled
 
     try {
-      await File(dl.localPath!).copy(destPath);
+      // On desktop, saveFile returns a path but doesn't write bytes, so copy.
+      // On mobile, saveFile with bytes already wrote the file.
+      if (!(Platform.isAndroid || Platform.isIOS)) {
+        await File(dl.localPath!).copy(destPath);
+      }
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Archivo guardado en $destPath')),
